@@ -1,0 +1,70 @@
+CS 462 Lab 6 (KRL) Deliverables:
+
+PART 1
+echo.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/echo.krl
+see_songs.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/see_songs.krl
+Echo RID : b506809x1.prod
+See Songs RID : b506809x2.prod
+My ECI : ??????????????????????? -ASK ABOUT THIS - WHERE DO I GET THIS NUMBER?????
+
+Answers to questions:
+1)  output:
+	{
+		"directives": [{
+			"options": {
+				"something": "Everything is Awesome"
+			},
+			"name": "say",
+			"meta": {
+				"rule_name": "message",
+				"txn_id": "592918DC-C78F-11E4-8E25-8277E71C24E1",
+				"rid": "b506809x1",
+				"eid": "15038657188"
+			}
+		}]
+	}
+	
+	Only a single directive returned.
+	Only a single rule was scheduled and ran, which was the "message" rule from the "echo" ruleset.
+		(confirmed by looking at the log files in the devtools)
+
+2)	output:
+	{
+		"directives": [{
+			"options": {
+				"something": "Everything is Awesome"
+			},
+			"name": "say",
+			"meta": {
+				"rule_name": "message",
+				"txn_id": "F54254B8-C799-11E4-B36C-F37887B7806A",
+				"rid": "b506809x1",
+				"eid": "42409662111"
+			}
+		}, {
+			"options": {
+				"song": "Everything is Awesome"
+			},
+			"name": "sing",
+			"meta": {
+				"rule_name": "songs",
+				"txn_id": "F54254B8-C799-11E4-B36C-F37887B7806A",
+				"rid": "b506809x2",
+				"eid": "42409662111"
+			}
+		}]
+	}
+	
+	Two directives returned.
+	Two rules were scheduled and ran, both the "message" rule from the "echo" ruleset,
+		and the "songs" rule from the "see_song" ruleset
+
+3)	There is a difference because the second time around there were two rules (located in different rulesets)
+		listening for the same event instead of just one.  Both the "message" and "songs" rules were listening
+		for the "echo::message" event with an "input" parameter.  The pico broadcasts the event to all rulesets,
+		so even though the rules are in different rulesets, both of them see the event, and both directives
+		returned a response.
+		
+		
+		
+PART 2
