@@ -18,10 +18,11 @@ ruleset see_songs_v2 {
 		}
 	}
 	rule find_hymn {
-		select when explicit sung song re/.*god.*/i
+		select when explicit sung song re/(.*god.*)/i setting(msg)
 		noop();
 		always{
-			raise explicit event "found_hymn";
+			raise explicit event "found_hymn"
+				with hymn = msg;
 		}
 	}
 }
