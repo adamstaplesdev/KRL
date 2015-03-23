@@ -42,7 +42,7 @@ ruleset song_store {
 			new_songs_map = songs_map.put(timestamp, msg);
 		}
 		noop();
-		fired{
+		always{
 			set ent:all_songs new_songs_map;
 		}
 	}
@@ -54,14 +54,14 @@ ruleset song_store {
 			new_hymns_map = hymns_map.put(timestamp, msg);
 		}
 		noop();
-		fired{
+		always{
 			set ent:all_hymns new_hymns_map;
 		}
 	}
 	rule clear_songs {
 		select when song reset
 		noop();
-		fired{
+		always{
 			clear ent:all_songs;
 			clear ent:all_hymns;
 		}
