@@ -5,7 +5,7 @@ echo.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/echo.krl
 see_songs.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/see_songs.krl
 Echo RID : b506809x1.prod
 See Songs RID : b506809x2.prod
-My ECI : ??????????????????????? -ASK ABOUT THIS - WHERE DO I GET THIS NUMBER?????
+My ECI : 32BE4C0A-C34B-11E4-8F76-BF0A040ECC4C
 
 Answers to questions:
 1)  output:
@@ -68,3 +68,54 @@ Answers to questions:
 		
 		
 PART 2
+see_songs_v2.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/see_songs_v2.krl
+See Songs V2 RID : b506809x3.prod
+My ECI : 32BE4C0A-C34B-11E4-8F76-BF0A040ECC4C
+
+Answers to Questions:
+1)	if the "msg_type=song" attribute was sent as a parameter to the event, the directive
+	from part 1 woule fire, and I would get a response saying "sing: songTitle'
+	It is easy to explain... The select statement in the "songs" rule only fires the event
+	if there was an exact match for the given attributes.  If msg_type was anything other
+	than "song", the select statement would pass over the event, because it didn't match
+	the requirements.
+
+2)	*****SEE BOOK FOR EXPLANATION OF INTERMEDIARIES********
+
+3)	The following snippets of log entries show three things:
+	first - the "songs" rule only fires if msg_type is equal to song
+	second - the "song" explicit rule is raised if msg_type is equal to song
+	third - the "find_hymn" explicit event is fired only if input contains "god"
+	******************
+	PARAMETERS: msg_type is not equal to "song"
+	847287348 INFO [no rid] [global] event_attrs:{input:Praises to our GOD, msg_type:moose} 
+	BF0A040ECC4C/35919565358/echo/message 
+	847287355 INFO [no rid] [global] -----***---- Start Scheduling ----***----- 
+	847287356 INFO [no rid] [global] Processing event echo/message for b506809x3 
+	847287430 INFO b506809x3 songs -----***---- Event processing finished; assembling response ----***----- 
+	*******************
+	PARAMETERS: msg_type is equal to "song" BUT input does not contain "god"
+	847629604 INFO [no rid] [global] event_attrs:{input:all the small things, msg_type:song} 
+	BF0A040ECC4C/9204956749/echo/message 
+	847629608 INFO [no rid] [global] -----***---- Start Scheduling ----***----- 
+	847629609 INFO [no rid] [global] Processing event echo/message for b506809x3 
+	847629643 INFO b506809x3 songs Adding to schedule: b506809x3.prod:songs 
+	847629752 INFO b506809x3 songs Context switch to b506809x3:songs for event echo:message 
+	847629759 INFO b506809x3 songs -----***---- begin rule execution: songs ----***----- 
+	847629767 INFO b506809x3 songs rule fired 
+	847629839 INFO b506809x3 songs -----***---- Event processing finished; assembling response ----***----- 
+	********************
+	PARAMETERS: msg_type is equal to "song" AND input contains "god" (case insensitive)
+	847778165 INFO [no rid] [global] event_attrs:{input:GoD is Love, msg_type:song}
+	BF0A040ECC4C/58434737683/echo/message 
+	847778170 INFO [no rid] [global] -----***---- Start Scheduling ----***----- 
+	847778171 INFO [no rid] [global] Processing event echo/message for b506809x3 
+	847778206 INFO b506809x3 songs Adding to schedule: b506809x3.prod:songs 
+	847778294 INFO b506809x3 songs Context switch to b506809x3:songs for event echo:message 
+	847778301 INFO b506809x3 songs -----***---- begin rule execution: songs ----***----- 
+	847778309 INFO b506809x3 songs rule fired 
+	847778371 INFO b506809x3 find_hymn Adding to schedule: b506809x3.prod:find_hymn 
+	847778468 INFO b506809x3 find_hymn Context switch to b506809x3:find_hymn for event explicit:sung 
+	847778469 INFO b506809x3 find_hymn -----***---- begin rule execution: find_hymn ----***----- 
+	847778477 INFO b506809x3 find_hymn rule fired 
+	847778511 INFO b506809x3 find_hymn -----***---- Event processing finished; assembling response ----***---
