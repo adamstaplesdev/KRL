@@ -6,8 +6,8 @@ ruleset song_store {
 		>>
 		author "Richard Adam Staples"
 		logging on
-		sharing on
-		provides hymns, secular_music
+		sharing off
+		provides songs, hymns, secular_music
 	}
 	global {
 		songs = function() {
