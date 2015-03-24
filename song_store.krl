@@ -11,11 +11,11 @@ ruleset song_store {
 	}
 	global {
 		songs = function() {
-			song_map = ent:all_songs.encode()
+			song_map = ent:all_songs.defaultsTo("No Songs")
 			song_map
 		};
 		hymns = function() {
-			hymn_map = ent:all_hymns.encode()
+			hymn_map = ent:all_hymns.defaultsTo("No Hymns")
 			hymn_map
 		};
 		secular_music = function() {
