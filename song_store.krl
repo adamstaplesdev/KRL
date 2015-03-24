@@ -11,11 +11,11 @@ ruleset song_store {
 	}
 	global {
 		songs = function() {
-			song_map = ent:all_songs.defaultsTo("No Songs")
+			song_map = ent:all_songs.defaultsTo("No Songs").klog("Value stored in song_map: ")
 			song_map
 		};
 		hymns = function() {
-			hymn_map = ent:all_hymns.defaultsTo("No Hymns")
+			hymn_map = ent:all_hymns.defaultsTo("No Hymns").klog("Value stored in hymn_map: ")
 			hymn_map
 		};
 		secular_music = function() {
@@ -43,6 +43,7 @@ ruleset song_store {
 		}
 		noop();
 		always{
+			log "Collect_songs has been fired, and new_songs_map contains "+new_songs_map.encode();
 			set ent:all_songs new_songs_map;
 		}
 	}
@@ -55,6 +56,7 @@ ruleset song_store {
 		}
 		noop();
 		always{
+			log "Collect_hymns has been fired, and new_hymns_map contains "+new_hymns_map.encode();
 			set ent:all_hymns new_hymns_map;
 		}
 	}
