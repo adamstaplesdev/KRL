@@ -39,7 +39,7 @@ ruleset song_store {
 		pre {
 			timestamp = time:now();
 			songs_map = ent:all_songs || {};
-			new_songs_map = songs_map.put(timestamp, msg);
+			new_songs_map = songs_map.put([timestamp], msg);
 		}
 		noop();
 		always{
@@ -52,7 +52,7 @@ ruleset song_store {
 		pre {
 			timestamp = time:now();
 			hymns_map = ent:all_hymns || {};
-			new_hymns_map = hymns_map.put(timestamp, msg);
+			new_hymns_map = hymns_map.put([timestamp], msg);
 		}
 		noop();
 		always{
