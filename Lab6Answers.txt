@@ -2,8 +2,8 @@ CS 462 Lab 6 (KRL) Deliverables:
 
 PART 1
 echo.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/echo.krl
-see_songs.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/see_songs.krl
 Echo RID : b506809x1.prod
+see_songs.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/see_songs.krl
 See Songs RID : b506809x2.prod
 My ECI : 32BE4C0A-C34B-11E4-8F76-BF0A040ECC4C
 
@@ -83,8 +83,8 @@ Answers to Questions:
 2)	*****SEE BOOK FOR EXPLANATION OF INTERMEDIARIES********
 
 3)	The following snippets of log entries show three things:
-	first - the "songs" rule only fires if msg_type is equal to song
-	second - the "song" explicit rule is raised if msg_type is equal to song
+	first - the "songs" rule doesn't fire if msg_type is not equal to song
+	second - the "song" explicit event is raised from the "songs" rule if msg_type is equal to song
 	third - the "find_hymn" explicit event is fired only if input contains "god"
 	******************
 	PARAMETERS: msg_type is not equal to "song"
@@ -119,3 +119,48 @@ Answers to Questions:
 	847778469 INFO b506809x3 find_hymn -----***---- begin rule execution: find_hymn ----***----- 
 	847778477 INFO b506809x3 find_hymn rule fired 
 	847778511 INFO b506809x3 find_hymn -----***---- Event processing finished; assembling response ----***---
+
+
+
+PART 3
+see_songs_v2.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/see_songs_v2.krl
+See Songs V2 RID : b506809x3.prod
+song_store.krl : https://raw.githubusercontent.com/paperclip27/KRL/master/song_store.krl
+Song Store RID : b506809x4.prod
+My ECI : 32BE4C0A-C34B-11E4-8F76-BF0A040ECC4C
+
+Answers to Questions:
+1)	collect_songs serves as the "event" portion of the event-query API. Whenever an explicit song
+	event is detected, the song and a timestamp are stored in an entity variable, which is unique
+	for each user. The database of songs will continue to grow whenever there is a new song to
+	record.  This takes no extra work on the users part, and occurs behind the scenes.
+	The "songs" function serves as the "query portion of the event-query API. Whenever the user
+	needs access to the songs collected so far, he can make a request (or query) to this API
+	endpoint, and it allows them to peek into the database.
+	Together, they provide a way to both store and retrieve data, both push and pull, a full-featured
+	event-query API.
+2)	All of my song and hymn data is stored as maps in entity variables. This gives me access
+	to the map.filter method.  I performed a filter operation on my collection of all songs,
+	passing it an anonymous function which would check to see if the specified song existed
+	in my all hymns map.  The inner method was very simple, using all_hymns{song}.isnull()
+	to see if the song had a matching timestamp in the all_hymns map.  If isnull returned
+	true, then the song was a secular song, and should be included in the final set.
+	After the filtering finished, I returned the final collection of secular songs.
+3)	If provides does not include "songs", then the following error is returned whenever
+	anyone attempts to call the function through the Sky API:
+	{
+		error_str: "Function songs does not exist"
+		error: 101
+	}
+	This basically means that only methods listed in the "provides" statement are accessible
+	through the API.
+4)	If sharing is set to off, then the following error is returned whenever
+	anyone attempts to call a function through the Sky API:
+	{
+		error_str: "Sharing not on for module b506809x4"
+		error: 100
+	}
+	This basically means that module methods listed in the "provides" statement are only
+	accessible if sharing is turned on.  This may be used for rulesets during the development
+	process, or for experimental module methods, which should not be accessible in the production
+	environment.
